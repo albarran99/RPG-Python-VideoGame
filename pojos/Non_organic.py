@@ -1,16 +1,16 @@
 class Bionicle:
-    def __init__(self, name: str, human_age: int, place: str, skill: str, pv: int, dmg: int):
+    def __init__(self, name: str, lvl: int, xp: int, pv: int, dmg: int) -> None:
 
         self.name = name
-        self.human_age = human_age
-        self.place = place
-        self.skill = skill
-        self.dmg = dmg
+        self.lvl = lvl
+        self.xp = xp
         self.pv = pv
+        self.dmg = dmg
 
 
-def say_hello_nonOrganic(bionicle):
+def say_hello(bionicle):
     print('Hola mi nombre es ' + bionicle.name)
-    print('Tengo ' + str(bionicle.human_age) + ' años humanos')
-    print('Soy de ' + bionicle.place)
-    print('Mi habilidad especial es ' + bionicle.skill)
+    print('Tengo ' + str(bionicle.lvl) + ' nivel')
+    print('la experiencia acumulada es ' + str(bionicle.xp))
+    print('mi vida actual es de ' + str(bionicle.pv))
+    print('mi daño es de ' + str(bionicle.dmg))

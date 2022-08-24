@@ -3,16 +3,16 @@ import random
 import sys
 
 from pojos.Person import say_hello, Humans
-from pojos.Non_organic import say_hello_nonOrganic, Bionicle
-from pojos.Animal import say_hello_animals, Monsters
+from pojos.Non_organic import say_hello, Bionicle
+from pojos.Animal import say_hello, Monsters
 
 application_path = os.path.dirname(sys.executable)
 
 character_1 = Humans('salary-man', 1, 0, 20, 4)
-character_2 = Bionicle('vezon', 16, 'Voya nui', 'teletransporte', 20, 4)
-character_3 = Monsters('rathalos', 17, 'Japan', 'llamas', 20, 4)
-character_4 = Monsters('zinogre', 12, 'Japan', 'truenos', 20, 4)
-character_5 = Bionicle('vezok', 16, 'Japan', 'ladron de poder', 20, 4)
+character_2 = Bionicle('vezon', 1, 0, 20, 4)
+character_3 = Monsters('rathalos', 1, 0, 20, 4)
+character_4 = Monsters('zinogre', 1, 0, 20, 4)
+character_5 = Bionicle('vezok', 1, 0, 20, 4)
 
 number_not_repeat = [1, 2, 3, 4]
 you_random_heal = [1, 2, 3]
@@ -35,13 +35,13 @@ is_computer_character = None
 def characters_info():
     say_hello(character_1)
     print("\n")
-    say_hello_nonOrganic(character_2)
+    say_hello(character_2)
     print("\n")
-    say_hello_animals(character_3)
+    say_hello(character_3)
     print("\n")
-    say_hello_animals(character_4)
+    say_hello(character_4)
     print("\n")
-    say_hello_nonOrganic(character_5)
+    say_hello(character_5)
     print("\n")
 
 
