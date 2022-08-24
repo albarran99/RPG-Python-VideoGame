@@ -15,7 +15,9 @@ character_4 = Monsters('zinogre', 12, 'Japan', 'truenos', 20, 4)
 character_5 = Bionicle('vezok', 16, 'Japan', 'ladron de poder', 20, 4)
 
 number_not_repeat = [1, 2, 3, 4]
-ram_command = random.sample(number_not_repeat, 1)
+you_random_heal = [1, 2, 3]
+ran_command = random.sample(number_not_repeat, 1)
+ran_heal = random.sample(you_random_heal, 1)
 
 user_choose_character = None
 
@@ -140,7 +142,7 @@ def options_menu():
 
 
 def user_options(command):
-    # global ram_command
+    global ran_heal
 
     while command != 'q':
         if command == 'hit':
@@ -151,13 +153,22 @@ def user_options(command):
             command = input()
 
         elif command == 'heal':
-            print(
-                user_choose_character.name + ' se va a curar 5 puntos de vida' + f'(tu vida actual: {user_choose_character.pv})')
+            print(user_choose_character.name + ' se va a curar la vida' + f'(tu vida actual: {user_choose_character.pv})')
+            ran_heal = random.sample(you_random_heal, 1)
             if user_choose_character.pv == 20:
                 print('no te puedes curar, ya tienes la vida hasta arriba')
             else:
-                user_choose_character.pv = user_choose_character.pv + 5
-                print(f'(tu vida actual: {user_choose_character.pv})')
+                if desglose_number(ran_heal) == 1:
+                    user_choose_character.pv = user_choose_character.pv + 5
+                    print('te has curado 5 de vida' + f'(tu vida actual: {user_choose_character.pv})')
+
+                elif desglose_number(ran_heal) == 2:
+                    print(f"fallaste la curacion (tu vida actual: {user_choose_character.pv})")
+
+                elif desglose_number(ran_heal) == 3:
+                    user_choose_character.pv = user_choose_character.pv + 5
+                    print('haces un hechizo perfecto y te curas 10 de vida' + f'(tu vida actual: {user_choose_character.pv})')
+
             options_menu()
             command = input()
 
@@ -187,7 +198,7 @@ def user_options(command):
 
 
 def run_game():
-    global ram_command
+    global ran_command
     global user_choose_character
     global is_computer_character
 
@@ -195,19 +206,19 @@ def run_game():
 
 
 def enemy_dodge():
-    global ram_command
+    global ran_command
     global user_choose_character
     global is_computer_character
 
-    if desglose_number(ram_command) == 1:
+    if desglose_number(ran_command) == 1:
         is_computer_character.pv = is_computer_character.pv - user_choose_character.dmg
 
         if is_computer_character.pv <= 0:
             print(
                 is_computer_character.name + ' Ha sido derrotado' + f'(tu vida actual: {user_choose_character.pv}) \n')
             user_choose_character.xp = user_choose_character.xp + 30
-            print("Has ganado " + str(30) + f'de experiencia, experiencia actual es: {user_choose_character.xp}')
-            ram_command = random.sample(number_not_repeat, 1)
+            print("Has ganado " + str(30) + f' de experiencia, experiencia actual es: {user_choose_character.xp}')
+            ran_command = random.sample(number_not_repeat, 1)
             chose_character_computer()
             user_choose_character.pv = user_choose_character.pv + 10
             options_menu()
@@ -215,17 +226,17 @@ def enemy_dodge():
         print('Uff!, eso dolió ahora ' + is_computer_character.name + ' le queda de vida ' + str(
             is_computer_character.pv) + f'(tu vida actual: {user_choose_character.pv})\n')
 
-        ram_command = random.sample(number_not_repeat, 1)
+        ran_command = random.sample(number_not_repeat, 1)
         # print(ram_command)
         enemy_ia()
 
-    elif desglose_number(ram_command) == 2:
+    elif desglose_number(ran_command) == 2:
         print('vaya! esquivo tú ataque')
-        ram_command = random.sample(number_not_repeat, 1)
+        ran_command = random.sample(number_not_repeat, 1)
         # print(ram_command)
         enemy_ia()
 
-    elif desglose_number(ram_command) == 3:
+    elif desglose_number(ran_command) == 3:
         print('Parece que ' + is_computer_character.name + " esta a muy distraido y recive un golpe critico")
         user_choose_character.dmg = user_choose_character.dmg + 2
         is_computer_character.pv = is_computer_character.pv - user_choose_character.dmg
@@ -235,21 +246,21 @@ def enemy_dodge():
             print(
                 is_computer_character.name + ' Ha sido derrotado' + f'(tu vida actual: {user_choose_character.pv}) \n')
             user_choose_character.xp = user_choose_character.xp + 30
-            print("Has ganado " + str(30) + f'de experiencia, experiencia actual es: {user_choose_character.xp}')
-            ram_command = random.sample(number_not_repeat, 1)
+            print("Has ganado " + str(30) + f' de experiencia, experiencia actual es: {user_choose_character.xp}')
+            ran_command = random.sample(number_not_repeat, 1)
             chose_character_computer()
             user_choose_character.pv = user_choose_character.pv + 10
             options_menu()
 
         print(
             "dios mio, eso a sido un terrible golpe a " + is_computer_character.name + f" le queda de vida {is_computer_character.pv} " + '\n')
-        ram_command = random.sample(number_not_repeat, 1)
+        ran_command = random.sample(number_not_repeat, 1)
         # print(ram_command)
         enemy_ia()
 
-    elif desglose_number(ram_command) == 4:
+    elif desglose_number(ran_command) == 4:
         print('tu ataque se perdio!')
-        ram_command = random.sample(number_not_repeat, 1)
+        ran_command = random.sample(number_not_repeat, 1)
         # print(ram_command)
         enemy_ia()
 
@@ -258,14 +269,14 @@ def enemy_dodge():
 
 
 def enemy_ia():
-    global ram_command
+    global ran_command
     global user_choose_character
     global computer_character
 
-    if desglose_number(ram_command) == 1:
+    if desglose_number(ran_command) == 1:
         print('genial!, a fallado el ataque' + f'(tu vida actual: {user_choose_character.pv})')
 
-    elif desglose_number(ram_command) == 2:
+    elif desglose_number(ran_command) == 2:
         print('Oh no! va a atacar ')
 
         user_choose_character.pv = user_choose_character.pv - is_computer_character.dmg
@@ -279,7 +290,7 @@ def enemy_ia():
 
         print(f'(tu vida actual: {user_choose_character.pv}) \n')
 
-    elif desglose_number(ram_command) == 3:
+    elif desglose_number(ran_command) == 3:
         print('Oh no! va a atacar ')
         print('parece que sera golpe critico!')
 
@@ -296,7 +307,7 @@ def enemy_ia():
 
         print('uf! como dolio ese golpe critico ' + f'(tu vida actual: {user_choose_character.pv})')
 
-    elif desglose_number(ram_command) == 4:
+    elif desglose_number(ran_command) == 4:
         print('parece que esta distraido')
 
     else:
@@ -335,11 +346,11 @@ def chose_character_user():
 
 
 def chose_character_computer():
-    global ram_command
+    global ran_command
     global user_choose_character
     global computer_character
 
-    if desglose_number(ram_command) == 1:
+    if desglose_number(ran_command) == 1:
         computer_character = character_2
         if computer_character == user_choose_character:
             print('personaje ya elejido')
@@ -348,7 +359,7 @@ def chose_character_computer():
         else:
             computer_character = character_2
 
-    if desglose_number(ram_command) == 2:
+    if desglose_number(ran_command) == 2:
         computer_character = character_3
         if computer_character == user_choose_character:
             print("personaje ya elejido")
@@ -357,7 +368,7 @@ def chose_character_computer():
         else:
             computer_character = character_3
 
-    if desglose_number(ram_command) == 3:
+    if desglose_number(ran_command) == 3:
         computer_character = character_4
         if computer_character == user_choose_character:
             print("personaje ya elejido")
@@ -366,7 +377,7 @@ def chose_character_computer():
         else:
             computer_character = character_4
 
-    if desglose_number(ram_command) == 4:
+    if desglose_number(ran_command) == 4:
         computer_character = character_5
         if computer_character == user_choose_character:
             print("personaje ya elejido")
