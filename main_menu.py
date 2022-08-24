@@ -2,9 +2,9 @@ import os
 import random
 import sys
 
-from Person import say_hello, Humans
-from Non_organic import say_hello_nonOrganic, Bionicle
-from Animal import say_hello_animals, Monsters
+from pojos.Person import say_hello, Humans
+from pojos.Non_organic import say_hello_nonOrganic, Bionicle
+from pojos.Animal import say_hello_animals, Monsters
 
 application_path = os.path.dirname(sys.executable)
 
