@@ -54,7 +54,7 @@ def main():
 
     commands_panel = PanedWindow()
 
-    player_name = Label(text=f'lvl:{user_choose_character.lvl} {user_choose_character.name}')
+    player_name = Label(text=f'lvl:{user_choose_character.lvl} {user_choose_character.name}', bg='lightgray')
     player_name.grid(row=1, column=0)
 
     player_live = ttk.Progressbar(player_bar_live)
@@ -67,7 +67,7 @@ def main():
     player_live.configure(maximum=value_player_live, style='green.Horizontal.TProgressbar')
     player_live.grid(rows=1, column=2)
 
-    enemy_name = Label(text=f'lvl:{computer_character.lvl} {computer_character.name}')
+    enemy_name = Label(text=f'lvl:{computer_character.lvl} {computer_character.name}', bg='lightgray')
     enemy_name.grid(row=1, column=2)
 
     enemy_style_bar = ttk.Style()
@@ -90,7 +90,7 @@ def main():
     commands_panel.grid(row=5, column=1)
 
     frame_text_panel = PanedWindow()
-    battle_dialogs = Label(frame_text_panel, text=f'Te has topado con un {computer_character.name} salvaje')
+    battle_dialogs = Label(frame_text_panel, text=f'Te has topado con un {computer_character.name} salvaje', bg='lightgray')
 
     battle_dialogs.configure(width=50, height=3, font=("Courier", 10))
 
@@ -203,7 +203,7 @@ def enemy_dodge():
         enemy_ia()
 
     elif desglose_number(ran_command) == 2:
-        print('vaya! esquivo tú ataque')
+        print('vaya! esquivo tú ataque\n')
         battle_dialogs.config(text='vaya! esquivo tú ataque')
         battle_dialogs.update()
         ran_command = random.sample(number_not_repeat, 1)
@@ -211,7 +211,7 @@ def enemy_dodge():
         enemy_ia()
 
     elif desglose_number(ran_command) == 3:
-        print('Parece que ' + computer_character.name + " esta a muy distraido y recive un golpe critico")
+        print('Parece que ' + computer_character.name + " esta a muy distraido y recive un golpe critico\n")
         battle_dialogs.config(text='Parece que ' + computer_character.name + "\n esta a muy distraido y recive un golpe critico")
         battle_dialogs.update()
         user_choose_character.dmg = user_choose_character.dmg + 2
@@ -224,7 +224,7 @@ def enemy_dodge():
             battle_dialogs.config(text=computer_character.name + ' Ha sido derrotado')
             battle_dialogs.update()
             user_choose_character.xp = user_choose_character.xp + 30
-            print("Has ganado " + str(30) + f' de experiencia, experiencia actual es: {user_choose_character.xp}')
+            print("Has ganado " + str(30) + f' de experiencia, experiencia actual es: {user_choose_character.xp}\n')
             battle_dialogs.config(text="Has ganado " + str(30) + f'\n de experiencia, experiencia actual es: {user_choose_character.xp}')
             battle_dialogs.update()
             ran_command = random.sample(number_not_repeat, 1)
@@ -247,34 +247,40 @@ def enemy_dodge():
         # print(ram_command)
         enemy_ia()
 
-    else:
-        print("los dos adversarios se miran fijamente")
-
 
 def heal_user_player():
     global ran_heal
     global player_live
     global battle_dialogs
+    global ran_command
     print(user_choose_character.name + ' se va a curar la vida' + f'(tu vida actual: {user_choose_character.pv})')
     battle_dialogs.config(text=user_choose_character.name + ' se va a curar la vida')
     battle_dialogs.update()
     ran_heal = random.sample(you_random_heal, 1)
+
     if user_choose_character.pv == 20:
         print('no te puedes curar, ya tienes la vida hasta arriba')
         battle_dialogs.config(text='no te puedes curar, ya tienes la vida hasta arriba')
         battle_dialogs.update()
+        ran_command = random.sample(number_not_repeat, 1)
+        enemy_ia()
+
     else:
         if desglose_number(ran_heal) == 1:
             user_choose_character.pv = user_choose_character.pv + 5
-            player_live['value'] += 5
-            print('te has curado 5 de vida' + f'(tu vida actual: {user_choose_character.pv})')
-            battle_dialogs.config(text='te has curado 5 de vida, genial!')
+            player_live['value'] += 6
+            print('te has curado 6 de vida' + f'(tu vida actual: {user_choose_character.pv})')
+            battle_dialogs.config(text='te has curado 6 de vida, genial!')
             battle_dialogs.update()
+            ran_command = random.sample(number_not_repeat, 1)
+            enemy_ia()
 
         elif desglose_number(ran_heal) == 2:
             print(f"fallaste la curacion (tu vida actual: {user_choose_character.pv})")
             battle_dialogs.config(text="fallaste la curacion")
             battle_dialogs.update()
+            ran_command = random.sample(number_not_repeat, 1)
+            enemy_ia()
 
         elif desglose_number(ran_heal) == 3:
             user_choose_character.pv = user_choose_character.pv + 10
@@ -282,6 +288,8 @@ def heal_user_player():
             print('haces un hechizo perfecto y te curas 10 de vida' + f'(tu vida actual: {user_choose_character.pv})')
             battle_dialogs.config(text='haces un hechizo perfecto y te curas 10 de vida')
             battle_dialogs.update()
+            ran_command = random.sample(number_not_repeat, 1)
+            enemy_ia()
 
 
 def enemy_ia():
@@ -292,7 +300,7 @@ def enemy_ia():
     global battle_dialogs
 
     if desglose_number(ran_command) == 1:
-        print('genial!, a fallado el ataque' + f'(tu vida actual: {user_choose_character.pv})')
+        print('genial!, a fallado el ataque' + f'(tu vida actual: {user_choose_character.pv})\n')
         battle_dialogs.config(text='genial!, a fallado el ataque')
         battle_dialogs.update()
 
@@ -319,7 +327,7 @@ def enemy_ia():
         battle_dialogs.config(text='Oh no! va a atacar ')
         battle_dialogs.update()
         print('parece que sera golpe critico!')
-        battle_dialogs.config(text='parece que sera golpe critico!')
+        battle_dialogs.config(text='parece que sera golpe critico!\n')
         battle_dialogs.update()
 
         computer_character.dmg = computer_character.dmg + 2
@@ -335,18 +343,13 @@ def enemy_ia():
             user_choose_character.pv = user_choose_character.pv + 10
             sys.exit(0)
 
-        print('uf! como dolio ese golpe critico ' + f'(tu vida actual: {user_choose_character.pv})')
+        print('uf! como dolio ese golpe critico ' + f'(tu vida actual: {user_choose_character.pv})\n')
         battle_dialogs.config(text='uf! como dolio ese golpe critico ')
         battle_dialogs.update()
 
     elif desglose_number(ran_command) == 4:
-        print('parece que esta distraido')
+        print('parece que esta distraido\n')
         battle_dialogs.config(text='parece que esta distraido')
-        battle_dialogs.update()
-
-    else:
-        print(f"{computer_character.name} se esta replanteando su vida y como ha acabdo peleando con tigo")
-        battle_dialogs.config(text=f"{computer_character.name} se esta replanteando su vida y como ha acabdo peleando con tigo")
         battle_dialogs.update()
 
 
