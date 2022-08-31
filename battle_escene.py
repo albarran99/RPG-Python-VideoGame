@@ -64,21 +64,25 @@ def main():
     player_style_bar = ttk.Style()
     player_style_bar.configure("green.Horizontal.TProgressbar", foreground='green', background='green')
 
-    player_live.configure(maximum=value_player_live, style='green.Horizontal.TProgressbar')
+    enemy_style_bar = ttk.Style()
+    enemy_style_bar.configure("red.Horizontal.TProgressbar", foreground='red', background='red')
+
+    enemy_style_bar = ttk.Style()
+    enemy_style_bar.configure("yellow.Horizontal.TProgressbar", foreground='yellow', background='yellow')
+
+    player_live.configure(maximum=value_player_live)
     player_live.grid(rows=1, column=2)
 
     enemy_name = Label(text=f'lvl:{computer_character.lvl} {computer_character.name}', bg='lightgray')
     enemy_name.grid(row=1, column=2)
 
-    enemy_style_bar = ttk.Style()
-    enemy_style_bar.configure("red.Horizontal.TProgressbar", foreground='red', background='red')
-
-    enemy_live = ttk.Progressbar(enemy_bar_live, style='red.Horizontal.TProgressbar')
+    enemy_live = ttk.Progressbar(enemy_bar_live)
     enemy_live.grid(row=1, column=2)
 
-    value_player_live = 20
+    value_enemy_live = 20
     enemy_live['value'] = 20
-    enemy_live.configure(maximum=value_player_live)
+
+    enemy_live.configure(maximum=value_enemy_live)
 
     enemy_bar_live.add(enemy_live)
     player_bar_live.add(player_live)
@@ -305,7 +309,7 @@ def enemy_ia():
         battle_dialogs.update()
 
     elif desglose_number(ran_command) == 2:
-        print('Oh no! va a atacar ')
+        print('Oh no! va a atacar\n')
         battle_dialogs.config(text='Oh no! va a atacar ')
         battle_dialogs.update()
 
@@ -323,7 +327,7 @@ def enemy_ia():
         print(f'(tu vida actual: {user_choose_character.pv}) \n')
 
     elif desglose_number(ran_command) == 3:
-        print('Oh no! va a atacar ')
+        print('Oh no! va a atacar')
         battle_dialogs.config(text='Oh no! va a atacar ')
         battle_dialogs.update()
         print('parece que sera golpe critico!')
