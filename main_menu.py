@@ -198,10 +198,6 @@ def user_options(command):
 
 
 def run_game():
-    global ran_command
-    global user_choose_character
-    global is_computer_character
-
     tittle_menu()
 
 
@@ -457,4 +453,5 @@ def tittle_menu():
         user_command = input()
 
 
-run_game()
+if __name__ == '__main__':
+    run_game()
