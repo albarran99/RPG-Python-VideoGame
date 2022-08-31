@@ -1,7 +1,9 @@
+import os
 import random
 import sys
 import time
 from tkinter import Tk, PanedWindow, Button, BOTTOM, RAISED, ttk, TOP, LEFT, RIGHT, Label
+import tkinter as tk
 
 from pojos.Animal import Monsters
 from pojos.Non_organic import Bionicle
@@ -41,6 +43,9 @@ def main():
     window.geometry('620x125')
 
     window.configure(bg='lightgray')
+
+    ico = tk.PhotoImage(file='doge.png')
+    window.wm_iconphoto(False, ico)
 
     window.eval('tk::PlaceWindow . center')
 
