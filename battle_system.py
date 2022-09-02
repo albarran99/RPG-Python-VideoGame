@@ -1,15 +1,21 @@
 import random
 import sys
 
-from pojos.Animal import Monsters
-from pojos.Non_organic import Bionicle
-from pojos.Person import Humans
+from pojos.character import Character
 
-character_1 = Humans('salary-man', 1, 0, 20, 4)
-character_2 = Bionicle('vezon', 1, 0, 20, 4)
-character_3 = Monsters('rathalos', 1, 0, 20, 4)
-character_4 = Monsters('zinogre', 1, 0, 20, 4)
-character_5 = Bionicle('vezok', 1, 0, 20, 4)
+
+attack_list = {
+                'arañazo': 4,
+                'placaje': 4,
+                'corte afilado': 4,
+                'barrido': 4,
+              }
+
+character_1 = Character('salary-man', 1, 0, 20, 4, attack_list)
+character_2 = Character('vezon', 1, 0, 20, 4, attack_list)
+character_3 = Character('rathalos', 1, 0, 20, 4, attack_list)
+character_4 = Character('zinogre', 1, 0, 20, 4, attack_list)
+character_5 = Character('vezok', 1, 0, 20, 4, attack_list)
 
 user_choose_character = character_1
 

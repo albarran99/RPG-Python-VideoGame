@@ -2,17 +2,20 @@ import os
 import random
 import sys
 
-from pojos.Person import say_hello, Humans
-from pojos.Non_organic import say_hello, Bionicle
-from pojos.Animal import say_hello, Monsters
+from pojos.character import say_hello, Character, level_up
 
 application_path = os.path.dirname(sys.executable)
 
-character_1 = Humans('salary-man', 1, 0, 20, 4)
-character_2 = Bionicle('vezon', 1, 0, 20, 4)
-character_3 = Monsters('rathalos', 1, 0, 20, 4)
-character_4 = Monsters('zinogre', 1, 0, 20, 4)
-character_5 = Bionicle('vezok', 1, 0, 20, 4)
+attack_list = ['arañazo',
+               'placaje',
+               'corte afilado',
+               'barrido']
+
+character_1 = Character('salary-man', 1, 0, 100, 40, attack_list)
+character_2 = Character('vezon', 1, 0, 100, 40, attack_list)
+character_3 = Character('rathalos', 1, 0, 100, 40, attack_list)
+character_4 = Character('zinogre', 1, 0, 100, 40, attack_list)
+character_5 = Character('vezok', 1, 0, 100, 40, attack_list)
 
 number_not_repeat = [1, 2, 3, 4]
 you_random_heal = [1, 2, 3]
@@ -49,48 +52,78 @@ def save_game(character_info):
     global user_choose_character
     save_path = os.path.dirname(os.path.realpath(__file__)) + '/saves/'
     print("cargando espera un momento por favor...")
-    user_text = input("Escribe el nombre de la partida..." + '\n')
+    user_text = input("Escribe el nombre de la partida...\n")
     path = save_path + user_text
     file_to_write = open(path, 'w')
-    character_info = f'{user_choose_character.name}' + '\n' \
-                                                       f'{user_choose_character.lvl}' + '\n' \
-                                                                                        f'{user_choose_character.xp}' + '\n' \
-                                                                                                                        f'{user_choose_character.pv}stg' + '\n' \
-                                                                                                                                                           f'{user_choose_character.dmg}'
+    character_info = f'{user_choose_character.name}\n'\
+                    f'{user_choose_character.lvl}\n'\
+                    f'{user_choose_character.xp}\n'\
+                    f'{user_choose_character.pv}\n'\
+                    f'{user_choose_character.dmg}\n'\
+                    f'{user_choose_character.attack_list[0]}\n'\
+                    f'{user_choose_character.attack_list[1]}\n'\
+                    f'{user_choose_character.attack_list[2]}\n'\
+                    f'{user_choose_character.attack_list[3]}\n'\
+                                                                                                                                                                                            f'{user_choose_character.attack_list}'
     print("guardando espere por favor")
     file_to_write.write(character_info)
     file_to_write.close()
     print("guardado con exito")
 
 
-def load_file():
-    global real_chara
+def show_saves():
     path = os.path.dirname(os.path.realpath(__file__)) + '/saves/'
     list_saves = os.listdir(path)
-    stats = None
+    print("tus partidas: ")
     for save_name in list_saves:
-        print(f"tus partidas: {save_name}")
-        try:
-            user_save = input('-Elige partida-')
-            real_path = path + user_save
-            stats = open(real_path, 'r')
-        except FileNotFoundError:
-            print("ese nombre de archivo de guardado no existe")
+        print(f'{save_name}')
 
-        inf_name = stats.readline(-1)
 
-        lvl_num = stats.readline(-2).strip('\n')
+def load_file():
+    global real_chara
+    list_attk = []
+    path = os.path.dirname(os.path.realpath(__file__)) + '/saves/'
+    stats = None
+    show_saves()
+    try:
+        user_save = input('-Elige partida-\n')
+        real_path = path + user_save
+        stats = open(real_path, 'r')
+    except FileNotFoundError:
+        print("ese nombre de archivo de guardado no existe")
+        user_save = input('-Elige partida-\n')
 
-        px_num = stats.readline(-3).strip('\n')
+    inf_name = stats.readline(-1)
 
-        pv_num = stats.readline(-4).strip('\n')
+    lvl_num = stats.readline(-2).strip('\n')
 
-        dmg_num = stats.readline(-5).strip('\n')
-        load_chara = find_a_character(inf_name.strip('\n'))
-        real_chara = load_chara.__init__(inf_name, int(lvl_num), int(px_num), int(pv_num), int(dmg_num))
-        computer_player()
+    px_num = stats.readline(-3).strip('\n')
 
-    return real_chara
+    pv_num = stats.readline(-4).strip('\n')
+
+    dmg_num = stats.readline(-5).strip('\n')
+
+    attack_one = stats.readline(-6).strip('\n')
+
+    attack_two = stats.readline(-7).strip('\n')
+
+    attack_three = stats.readline(-8).strip('\n')
+
+    attack_four = stats.readline(-9).strip('\n')
+
+    list_attk.append(attack_one)
+
+    list_attk.append(attack_two)
+
+    list_attk.append(attack_three)
+
+    list_attk.append(attack_four)
+
+    load_chara = find_a_character(inf_name.strip('\n'))
+    real_chara = load_chara.__init__(inf_name, int(lvl_num), int(px_num), int(pv_num), int(dmg_num), list_attk)
+    computer_player()
+
+    return real_chara == user_choose_character
 
 
 def find_a_character(name):
@@ -141,13 +174,37 @@ def options_menu():
     return user_command
 
 
+def show_different_attacks():
+    print('-Tus ataques-\n')
+    for attack in attack_list:
+        print(f'{attack}')
+
+
 def user_options(command):
     global ran_heal
+    global user_damage
 
     while command != 'q':
         if command == 'hit':
-            # print(desglose_number(ram_command))
-            # print(desglose_number(number_not_repeat))
+            show_different_attacks()
+            user_choice_attack = input('elige un ataque')
+
+            if user_choice_attack == attack_list[0]:
+                print(f"vas a hacer {user_choice_attack}")
+
+            elif user_choice_attack == attack_list[1]:
+                print(f"vas a hacer {user_choice_attack}")
+
+            elif user_choice_attack == attack_list[2]:
+                print(f"vas a hacer {user_choice_attack}")
+
+            elif user_choice_attack == attack_list[3]:
+                print(f"vas a hacer {user_choice_attack}")
+
+            else:
+                print("no te he entendido vuelve a escribir el ataque")
+                user_choice_attack = input('elige un ataque')
+
             enemy_dodge()
             options_menu()
             command = input()
@@ -155,19 +212,23 @@ def user_options(command):
         elif command == 'heal':
             print(user_choose_character.name + ' se va a curar la vida' + f'(tu vida actual: {user_choose_character.pv})')
             ran_heal = random.sample(you_random_heal, 1)
-            if user_choose_character.pv == 20:
+            if user_choose_character.pv == 100:
                 print('no te puedes curar, ya tienes la vida hasta arriba')
             else:
                 if desglose_number(ran_heal) == 1:
-                    user_choose_character.pv = user_choose_character.pv + 5
-                    print('te has curado 5 de vida' + f'(tu vida actual: {user_choose_character.pv})')
+                    user_choose_character.pv = user_choose_character.pv + 50
+                    print('te has curado 50 de vida' + f'(tu vida actual: {user_choose_character.pv})')
+                    if user_choose_character.pv > 100:
+                        user_choose_character.pv = 100
 
                 elif desglose_number(ran_heal) == 2:
                     print(f"fallaste la curacion (tu vida actual: {user_choose_character.pv})")
 
                 elif desglose_number(ran_heal) == 3:
-                    user_choose_character.pv = user_choose_character.pv + 5
-                    print('haces un hechizo perfecto y te curas 10 de vida' + f'(tu vida actual: {user_choose_character.pv})')
+                    user_choose_character.pv = user_choose_character.pv + 80
+                    print('haces un hechizo perfecto y te curas 80 de vida' + f'(tu vida actual: {user_choose_character.pv})')
+                    if user_choose_character.pv > 100:
+                        user_choose_character.pv = 100
 
             options_menu()
             command = input()
@@ -179,15 +240,7 @@ def user_options(command):
             command = input()
 
         elif command == 'stats':
-            character_user = how_are_you()
-            say_hello(character_user)
-            options_menu()
-            command = input()
-
-        else:
-            user_choose_character.pv = user_choose_character.pv + 5
-            ram_command = random.sample(number_not_repeat, 1)
-            enemy_ia()
+            say_hello(user_choose_character)
             options_menu()
             command = input()
 
@@ -210,26 +263,25 @@ def enemy_dodge():
         is_computer_character.pv = is_computer_character.pv - user_choose_character.dmg
 
         if is_computer_character.pv <= 0:
-            print(
-                is_computer_character.name + ' Ha sido derrotado' + f'(tu vida actual: {user_choose_character.pv}) \n')
-            user_choose_character.xp = user_choose_character.xp + 30
-            print("Has ganado " + str(30) + f' de experiencia, experiencia actual es: {user_choose_character.xp}')
+            print(is_computer_character.name + ' Ha sido derrotado' + f'(tu vida actual: {user_choose_character.pv}) \n')
+            user_choose_character.xp = user_choose_character.xp + 50
+            print("Has ganado " + str(50) + f' de experiencia, experiencia actual es: {user_choose_character.xp}')
+            level_up(user_choose_character)
             ran_command = random.sample(number_not_repeat, 1)
             chose_character_computer()
-            user_choose_character.pv = user_choose_character.pv + 10
+            user_choose_character.pv = user_choose_character.pv + 50
+            if user_choose_character.pv > 100:
+                user_choose_character.pv = 100
             options_menu()
 
-        print('Uff!, eso dolió ahora ' + is_computer_character.name + ' le queda de vida ' + str(
-            is_computer_character.pv) + f'(tu vida actual: {user_choose_character.pv})\n')
+        print('Uff!, eso dolió ahora ' + is_computer_character.name + ' le queda de vida ' + str(is_computer_character.pv) + f'(tu vida actual: {user_choose_character.pv})\n')
 
         ran_command = random.sample(number_not_repeat, 1)
-        # print(ram_command)
         enemy_ia()
 
     elif desglose_number(ran_command) == 2:
         print('vaya! esquivo tú ataque')
         ran_command = random.sample(number_not_repeat, 1)
-        # print(ram_command)
         enemy_ia()
 
     elif desglose_number(ran_command) == 3:
@@ -239,25 +291,24 @@ def enemy_dodge():
         user_choose_character.dmg = user_choose_character.dmg - 2
 
         if is_computer_character.pv <= 0:
-            print(
-                is_computer_character.name + ' Ha sido derrotado' + f'(tu vida actual: {user_choose_character.pv}) \n')
-            user_choose_character.xp = user_choose_character.xp + 30
-            print("Has ganado " + str(30) + f' de experiencia, experiencia actual es: {user_choose_character.xp}')
+            print(is_computer_character.name + ' Ha sido derrotado' + f'(tu vida actual: {user_choose_character.pv}) \n')
+            user_choose_character.xp = user_choose_character.xp + 50
+            print("Has ganado " + str(50) + f' de experiencia, experiencia actual es: {user_choose_character.xp}')
             ran_command = random.sample(number_not_repeat, 1)
+            level_up(user_choose_character)
             chose_character_computer()
-            user_choose_character.pv = user_choose_character.pv + 10
+            user_choose_character.pv = user_choose_character.pv + 50
+            if user_choose_character.pv > 100:
+                user_choose_character.pv = 100
             options_menu()
 
-        print(
-            "dios mio, eso a sido un terrible golpe a " + is_computer_character.name + f" le queda de vida {is_computer_character.pv} " + '\n')
+        print("dios mio, eso a sido un terrible golpe a " + is_computer_character.name + f" le queda de vida {is_computer_character.pv} " + '\n')
         ran_command = random.sample(number_not_repeat, 1)
-        # print(ram_command)
         enemy_ia()
 
     elif desglose_number(ran_command) == 4:
         print('tu ataque se perdio!')
         ran_command = random.sample(number_not_repeat, 1)
-        # print(ram_command)
         enemy_ia()
 
     else:
@@ -279,10 +330,12 @@ def enemy_ia():
 
         if user_choose_character.pv <= 0:
             user_choose_character.xp = user_choose_character.xp / 2
-            print(
-                user_choose_character.name + f' Has Muerto (y has perdido la mitad de la xp (tu xp actual: {user_choose_character.xp}))')
-            user_choose_character.pv = user_choose_character.pv + 10
-            new_game_menu()
+            print(user_choose_character.name + f' Has Muerto (y has perdido la mitad de la xp (tu xp actual: {user_choose_character.xp}))')
+            user_choose_character.pv = user_choose_character.pv + 50
+            if user_choose_character.pv > 100:
+                user_choose_character.pv = 100
+            save_game(user_choose_character)
+            tittle_menu()
 
         print(f'(tu vida actual: {user_choose_character.pv}) \n')
 
@@ -296,10 +349,12 @@ def enemy_ia():
 
         if user_choose_character.pv <= 0:
             user_choose_character.xp = user_choose_character.xp / 2
-            print(
-                user_choose_character.name + f' Has Muerto (y has perdido la mitad de la xp (tu xp actual: {user_choose_character.xp}))')
-            user_choose_character.pv = user_choose_character.pv + 10
-            new_game_menu()
+            print(user_choose_character.name + f' Has Muerto (y has perdido la mitad de la xp (tu xp actual: {user_choose_character.xp}))')
+            user_choose_character.pv = user_choose_character.pv + 50
+            if user_choose_character.pv > 100:
+                user_choose_character.pv = 100
+            save_game(user_choose_character)
+            tittle_menu()
 
         print('uf! como dolio ese golpe critico ' + f'(tu vida actual: {user_choose_character.pv})')
 
@@ -441,6 +496,9 @@ def tittle_menu():
     user_command = input()
     if user_command == 'Empezar':
         new_game_menu()
+        command_user = options_menu()
+        user_options(command_user)
+
     elif user_command == 'continuar':
         load_file()
         options_menu()

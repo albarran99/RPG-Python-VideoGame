@@ -1,7 +1,7 @@
 import pygame
 import sys
 
-from battle_escene import main
+from battle_escene import battle_main
 
 pygame.init()
 size = (800, 500)
@@ -60,7 +60,7 @@ while True:
 
     pygame.draw.rect(screen, DARK_VIOLET, (cord_x, cord_y, 50, 50))
     if step_count == 100:
-        main()
+        battle_main()
     print(step_count)
     pygame.display.flip()
     clock.tick(60)

@@ -6,7 +6,7 @@ import tkinter as tk
 import battle_escene
 from pojos.Animal import Monsters
 from pojos.Non_organic import Bionicle
-from pojos.Person import Humans
+from pojos.character import Character
 
 computer_character = None
 
@@ -25,7 +25,7 @@ win_2 = None
 number_not_repeat = [1, 2, 3, 4]
 ran_command = random.sample(number_not_repeat, 1)
 
-character_1 = Humans('salary-man', 1, 0, 20, 4)
+character_1 = Character('salary-man', 1, 0, 20, 4)
 character_2 = Bionicle('vezon', 1, 0, 20, 4)
 character_3 = Monsters('rathalos', 1, 0, 20, 4)
 character_4 = Monsters('zinogre', 1, 0, 20, 4)
@@ -133,26 +133,31 @@ def load_game():
 def choose_chara_1():
     global real_chara
     real_chara = character_1
+    battle_escene.battle_main()
 
 
 def choose_chara_2():
     global real_chara
     real_chara = character_2
+    battle_escene.battle_main()
 
 
 def choose_chara_3():
     global real_chara
     real_chara = character_3
+    battle_escene.battle_main()
 
 
 def choose_chara_4():
     global real_chara
     real_chara = character_4
+    battle_escene.battle_main()
 
 
 def choose_chara_5():
     global real_chara
     real_chara = character_5
+    battle_escene.battle_main()
 
 
 def user_close_windows():
@@ -186,7 +191,7 @@ def download_game():
     load_chara = find_a_character(inf_name.strip('\n'))
     real_chara = load_chara.__init__(inf_name, int(lvl_num), int(px_num), int(pv_num), int(dmg_num))
     user_close_windows()
-    battle_escene.main()
+    battle_escene.battle_main()
 
 
 def find_a_character(name):

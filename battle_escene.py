@@ -4,16 +4,21 @@ import time
 from tkinter import Tk, PanedWindow, Button, BOTTOM, RAISED, ttk, TOP, LEFT, RIGHT, Label
 import tkinter as tk
 
-from pojos.Animal import Monsters
-from pojos.Non_organic import Bionicle
-from pojos.Person import Humans
+from pojos.character import Character
 from title_main import real_chara
 
-character_1 = Humans('salary-man', 1, 0, 20, 4)
-character_2 = Bionicle('vezon', 1, 0, 20, 4)
-character_3 = Monsters('rathalos', 1, 0, 20, 4)
-character_4 = Monsters('zinogre', 1, 0, 20, 4)
-character_5 = Bionicle('vezok', 1, 0, 20, 4)
+attack_list = {
+                'arañazo': 4,
+                'placaje': 4,
+                'corte afilado': 4,
+                'barrido': 4,
+              }
+
+character_1 = Character('salary-man', 1, 0, 20, 4, attack_list)
+character_2 = Character('vezon', 1, 0, 20, 4, attack_list)
+character_3 = Character('rathalos', 1, 0, 20, 4, attack_list)
+character_4 = Character('zinogre', 1, 0, 20, 4, attack_list)
+character_5 = Character('vezok', 1, 0, 20, 4, attack_list)
 
 window = None
 player_live = None
@@ -32,7 +37,7 @@ you_random_heal = [1, 2, 3]
 ran_heal = random.sample(you_random_heal, 1)
 
 
-def main():
+def battle_main():
     global window
     global player_live
     global enemy_live
@@ -101,7 +106,8 @@ def main():
     commands_panel.grid(row=5, column=1)
 
     frame_text_panel = PanedWindow()
-    battle_dialogs = Label(frame_text_panel, text=f'Te has topado con un {computer_character.name} salvaje', bg='lightgray')
+    battle_dialogs = Label(frame_text_panel, text=f'Te has topado con un {computer_character.name} salvaje',
+                           bg='lightgray')
 
     battle_dialogs.configure(width=50, height=3, font=("Courier", 10))
 
@@ -223,7 +229,8 @@ def enemy_dodge():
             time.sleep(10)
             sys.exit(0)
 
-        print('Uff!, eso dolió ahora ' + computer_character.name + ' le queda de vida ' + str(computer_character.pv) + f'(tu vida actual: {user_choose_character.pv})\n')
+        print('Uff!, eso dolió ahora ' + computer_character.name + ' le queda de vida ' + str(
+            computer_character.pv) + f'(tu vida actual: {user_choose_character.pv})\n')
 
         battle_dialogs.config(text=f'Uff!, eso le dolio a {computer_character.name}')
         battle_dialogs.update()
@@ -248,7 +255,8 @@ def enemy_dodge():
         print('Parece que ' + computer_character.name + " esta a muy distraido y recive un golpe critico\n")
 
         time.sleep(2)
-        battle_dialogs.config(text=f'Parece que {computer_character.name } \nesta a muy distraido y recive un golpe critico')
+        battle_dialogs.config(
+            text=f'Parece que {computer_character.name} \nesta a muy distraido y recive un golpe critico')
         battle_dialogs.update()
 
         user_choose_character.dmg = user_choose_character.dmg + 2
@@ -280,7 +288,8 @@ def enemy_dodge():
             time.sleep(10)
             sys.exit(0)
 
-        print("dios mio, eso a sido un terrible golpe a " + computer_character.name + f" le queda de vida {computer_character.pv} " + '\n')
+        print(
+            "dios mio, eso a sido un terrible golpe a " + computer_character.name + f" le queda de vida {computer_character.pv} " + '\n')
 
         time.sleep(2)
         battle_dialogs.config(text=f"dios mio, eso a sido un \nterrible golpe para {computer_character.name}")
@@ -335,14 +344,14 @@ def enemy_ia():
         user_choose_character.pv = user_choose_character.pv - computer_character.dmg
 
         if user_choose_character.pv <= 0:
-
             time.sleep(4)
 
             player_live['value'] -= computer_character.dmg
             player_live.update()
 
             user_choose_character.xp = user_choose_character.xp / 2
-            print(user_choose_character.name + f' Has Muerto (y has perdido la mitad de la xp (tu xp actual: \n{user_choose_character.xp}))')
+            print(
+                user_choose_character.name + f' Has Muerto (y has perdido la mitad de la xp (tu xp actual: \n{user_choose_character.xp}))')
 
             battle_dialogs.config(text=f'{user_choose_character.name} Has Muerto')
             battle_dialogs.update()
@@ -390,7 +399,8 @@ def enemy_ia():
             player_live.update()
 
             user_choose_character.xp = user_choose_character.xp / 2
-            print(user_choose_character.name + f' Has Muerto (y has perdido la mitad de la xp \n(tu xp actual: {user_choose_character.xp}))')
+            print(
+                user_choose_character.name + f' Has Muerto (y has perdido la mitad de la xp \n(tu xp actual: {user_choose_character.xp}))')
 
             time.sleep(2)
             battle_dialogs.config(text=user_choose_character.name + f' Has Muerto')
@@ -449,7 +459,8 @@ def user_player_flee():
 
     elif desglose_number(ran_heal) == 2:
         user_choose_character.pv = user_choose_character.pv - computer_character.dmg
-        print("consigues uir pero te llevas un golpe antes de escapar " + f'(tu vida actual: {user_choose_character.pv})')
+        print(
+            "consigues uir pero te llevas un golpe antes de escapar " + f'(tu vida actual: {user_choose_character.pv})')
 
         time.sleep(2)
         battle_dialogs.config(text="consigues uir pero te llevas un golpe antes de escapar ")
@@ -541,4 +552,4 @@ def user_close_windows():
 
 if __name__ == '__main__':
     computer_player()
-    main()
+    battle_main()
